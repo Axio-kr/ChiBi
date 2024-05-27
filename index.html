@@ -26,7 +26,7 @@
     <canvas id="canvas"></canvas>
 
     <script>
-        const cubism4Model = "https://your-username.github.io/your-repository-name/CHIBI/CHIBI.model3.json"; // 업로드된 모델 경로
+        const cubism4Model = "https://your-domain.com/path/to/CHIBI/CHIBI.model3.json"; // 업로드된 모델 경로
         const live2d = PIXI.live2d; 
 
         (async function main() {
@@ -36,7 +36,7 @@
                 resizeTo: window,
             });
 
-            const backgroundImage = "https://your-username.github.io/your-repository-name/2024.03.14-020336488.png"; // 업로드된 이미지 경로
+            const backgroundImage = "https://your-domain.com/path/to/img/2024.03.14-020336488.png"; // 업로드된 이미지 경로
 
             // 배경 이미지를 로드하고 스프라이트로 변환
             const backgroundTexture = await PIXI.Texture.fromURL(backgroundImage);
