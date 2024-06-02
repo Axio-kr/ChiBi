@@ -28,43 +28,42 @@
         const cubism4Model = "https://axio-kr.github.io/ChiBi/CHIBI.2048/CHIBI.model3.json"; // 업로드된 모델 경로
         const live2d = PIXI.live2d;
 
-        (async function main() {
-            const app = new PIXI.Application({
-                view: document.getElementById("canvas"),
-                autoStart: true,
-                resizeTo: window,
-            });
+        async function loadModel() {
+            try {
+                const app = new PIXI.Application({
+                    view: document.getElementById("canvas"),
+                    autoStart: true,
+                    resizeTo: window,
+                });
 
-            const backgroundImage = "https://axio-kr.github.io/ChiBi/img/2024.03.14-020336488.png"; // 업로드된 이미지 경로
+                const backgroundImage = "https://axio-kr.github.io/ChiBi/img/2024.03.14-020336488.png"; // 업로드된 이미지 경로
 
-            // 배경 이미지를 로드하고 스프라이트로 변환
-            const backgroundTexture = await PIXI.Texture.fromURL(backgroundImage);
-            const backgroundSprite = new PIXI.Sprite(backgroundTexture);
+                // 배경 이미지를 로드하고 스프라이트로 변환
+                const backgroundTexture = await PIXI.Texture.fromURL(backgroundImage);
+                const backgroundSprite = new PIXI.Sprite(backgroundTexture);
 
-            // 스프라이트 크기를 화면 크기에 맞게 조정
-            backgroundSprite.width = app.screen.width;
-            backgroundSprite.height = app.screen.height;
-
-            // 배경 스프라이트를 스테이지에 추가
-            app.stage.addChild(backgroundSprite);
-
-            // 리사이즈 이벤트에 맞춰 배경 크기를 조정
-            window.addEventListener('resize', () => {
+                // 스프라이트 크기를 화면 크기에 맞게 조정
                 backgroundSprite.width = app.screen.width;
                 backgroundSprite.height = app.screen.height;
-            });
 
-            const models = await Promise.all([
-                live2d.Live2DModel.from(cubism4Model)
-            ]);
+                // 배경 스프라이트를 스테이지에 추가
+                app.stage.addChild(backgroundSprite);
 
-            models.forEach((model) => {
+                // 리사이즈 이벤트에 맞춰 배경 크기를 조정
+                window.addEventListener('resize', () => {
+                    backgroundSprite.width = app.screen.width;
+                    backgroundSprite.height = app.screen.height;
+                });
+
+                // 모델 로드
+                const model = await live2d.Live2DModel.from(cubism4Model);
                 app.stage.addChild(model);
+
                 // 모델 초기 위치를 화면 중앙으로 설정
-                const initialScale = 0.5; // 필요한 초기 스케일 값을 설정합니다
+                const initialScale = 0.5; // 초기 스케일 값 설정
                 model.scale.set(initialScale);
 
-                // 모델의 크기를 알기 위해 먼저 업데이트
+                // 모델의 크기를 알기 위해 업데이트
                 model.updateTransform();
 
                 // 모델의 중심을 화면 중심에 맞추기
@@ -90,6 +89,7 @@
                     }
                 };
 
+                // 클릭 이벤트 설정
                 model.on("hit", (hitAreas) => {
                     if (hitAreas.includes("Body")) {
                         model.motion("TapBody");
@@ -98,8 +98,15 @@
                         model.motion("TapFace");
                     }
                 });
-            });
-        })();
+
+                console.log("모델 로드 성공:", cubism4Model);
+            } catch (error) {
+                console.error("모델 로드 실패:", error);
+            }
+        }
+
+        // 모델 로드 함수 호출
+        loadModel();
     </script>
 </body>
 </html>
