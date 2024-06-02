@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live2D 모델</title>
     <!-- PIXI.js 최신 버전 라이브러리 포함 -->
-    <script src="https://cdn.jsdelivr.net/npm/pixi.js@latest/dist/pixi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.2.4/pixi.min.js"></script>
     <!-- Live2D 라이브러리 포함 -->
     <script src="https://unpkg.com/pixi-live2d-display@latest/dist/pixi-live2d-display.js"></script>
     <style>
@@ -48,17 +48,17 @@
                 // 배경 스프라이트를 2배로 확대
                 backgroundSprite.scale.set(2);
 
-                // 스프라이트 크기를 화면 크기에 맞게 조정
-                backgroundSprite.width = app.screen.width * 2;
-                backgroundSprite.height = app.screen.height * 2;
+                // 배경 스프라이트 크기를 화면 크기에 맞게 조정
+                backgroundSprite.width = app.screen.width;
+                backgroundSprite.height = app.screen.height;
 
                 // 배경 스프라이트를 스테이지에 추가
                 app.stage.addChild(backgroundSprite);
 
                 // 리사이즈 이벤트에 맞춰 배경 크기를 조정
                 window.addEventListener('resize', () => {
-                    backgroundSprite.width = app.screen.width * 2;
-                    backgroundSprite.height = app.screen.height * 2;
+                    backgroundSprite.width = app.screen.width;
+                    backgroundSprite.height = app.screen.height;
                 });
 
                 // 모델 로드
@@ -68,7 +68,7 @@
                 app.stage.addChild(model);
 
                 // 모델 초기 스케일을 2배로 설정
-                model.scale.set(1.0);
+                model.scale.set(2.0);
 
                 // 모델의 크기를 알기 위해 업데이트
                 model.updateTransform();
@@ -80,7 +80,7 @@
                 window.wallpaperPropertyListener = {
                     applyUserProperties: function(properties) {
                         if (properties.scale) {
-                            const scaleValue = 1.4 * properties.scale.value / 100;
+                            const scaleValue = 2.0 * properties.scale.value / 100;
                             model.scale.set(scaleValue);
                             // 스케일 변경 시에도 중심 위치 재조정
                             model.updateTransform();
