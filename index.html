@@ -30,6 +30,8 @@
 
         async function loadModel() {
             try {
+                console.log("모델 로드 시작");
+
                 const app = new PIXI.Application({
                     view: document.getElementById("canvas"),
                     autoStart: true,
@@ -40,6 +42,7 @@
 
                 // 배경 이미지를 로드하고 스프라이트로 변환
                 const backgroundTexture = await PIXI.Texture.fromURL(backgroundImage);
+                console.log("배경 이미지 로드 성공");
                 const backgroundSprite = new PIXI.Sprite(backgroundTexture);
 
                 // 스프라이트 크기를 화면 크기에 맞게 조정
@@ -56,7 +59,9 @@
                 });
 
                 // 모델 로드
+                console.log("모델 로드 시도 중:", cubism4Model);
                 const model = await live2d.Live2DModel.from(cubism4Model);
+                console.log("모델 로드 성공");
                 app.stage.addChild(model);
 
                 // 모델 초기 위치를 화면 중앙으로 설정
@@ -99,7 +104,6 @@
                     }
                 });
 
-                console.log("모델 로드 성공:", cubism4Model);
             } catch (error) {
                 console.error("모델 로드 실패:", error);
             }
