@@ -54,17 +54,14 @@
                 // 배경 스프라이트를 스테이지에 추가
                 app.stage.addChild(backgroundSprite);
 
-                // 리사이즈 이벤트에 맞춰 배경 크기를 조정
-                window.addEventListener('resize', () => {
-                    backgroundSprite.width = app.screen.width * 2;
-                    backgroundSprite.height = app.screen.height * 2;
-                });
-
                 // 모델 로드
                 console.log("모델 로드 시도 중:", cubism4Model);
                 const model = await live2d.Live2DModel.from(cubism4Model);
                 console.log("모델 로드 성공");
                 app.stage.addChild(model);
+
+                // 모델 초기 스케일을 2배로 설정
+                model.scale.set(1.0);
 
                 // 모델의 크기를 알기 위해 업데이트
                 model.updateTransform();
