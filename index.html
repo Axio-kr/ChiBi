@@ -28,6 +28,9 @@
         const live2d = PIXI.live2d;
 
         (async function () {
+            try {
+                console.log("모델 로드 시작");
+
             const app = new PIXI.Application({
              view: document.getElementById('canvas'),
             });
