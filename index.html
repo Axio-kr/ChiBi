@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live2D 모델</title>
-
     <!-- PIXI.js 라이브러리 포함 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.2.4/pixi.min.js"></script>
-    <!-- pixi-live2d-display 최신 버전 포함 -->
-    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/cubism4.min.js"></script>
-    
+    <!-- Live2D 라이브러리 포함 -->
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/pixi-live2d-display.min.js"></script>
     <style>
         body, html {
             margin: 0;
@@ -26,12 +23,9 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
-
     <script>
-        console.log("PIXI version:", PIXI.VERSION);
-        console.log("Live2DModel available:", !!PIXI.live2d?.Live2DModel);
-
         const cubism4Model = "https://axio-kr.github.io/ChiBi/CHIBI/CHIBI.model3.json"; // 업로드된 모델 경로
+        const live2d = PIXI.live2d;
 
         async function loadModel() {
             try {
@@ -50,34 +44,37 @@
                 console.log("배경 이미지 로드 성공");
                 const backgroundSprite = new PIXI.Sprite(backgroundTexture);
 
-                // 배경 스프라이트를 화면 크기에 맞게 조정
-                backgroundSprite.width = app.screen.width;
-                backgroundSprite.height = app.screen.height;
+                // 배경 스프라이트를 2배로 확대
+                backgroundSprite.scale.set(2);
+
+                // 스프라이트 크기를 화면 크기에 맞게 조정
+                backgroundSprite.width = app.screen.width * 2;
+                backgroundSprite.height = app.screen.height * 2;
 
                 // 배경 스프라이트를 스테이지에 추가
                 app.stage.addChild(backgroundSprite);
 
                 // 리사이즈 이벤트에 맞춰 배경 크기를 조정
                 window.addEventListener('resize', () => {
-                    backgroundSprite.width = app.screen.width;
-                    backgroundSprite.height = app.screen.height;
+                    backgroundSprite.width = app.screen.width * 2;
+                    backgroundSprite.height = app.screen.height * 2;
                 });
 
                 // 모델 로드
                 console.log("모델 로드 시도 중:", cubism4Model);
-                const model = await PIXI.live2d.Live2DModel.from(cubism4Model);
+                const model = await live2d.Live2DModel.from(cubism4Model);
                 console.log("모델 로드 성공");
                 app.stage.addChild(model);
 
-                // 모델 초기 스케일을 1.0으로 설정
+                // 모델 초기 스케일을 1배로 설정
                 model.scale.set(1.0);
 
                 // 모델의 크기를 알기 위해 업데이트
                 model.updateTransform();
 
                 // 모델의 중심을 화면 중심에 맞추기
-                model.x = (app.screen.width / 2) - (model.width / 2);
-                model.y = (app.screen.height / 2) - (model.height / 2);
+                model.x = (innerWidth / 2) - (model.width / 2);
+                model.y = (innerHeight / 2) - (model.height / 2);
 
                 window.wallpaperPropertyListener = {
                     applyUserProperties: function(properties) {
@@ -86,14 +83,14 @@
                             model.scale.set(scaleValue);
                             // 스케일 변경 시에도 중심 위치 재조정
                             model.updateTransform();
-                            model.x = (app.screen.width / 2) - (model.width / 2);
-                            model.y = (app.screen.height / 2) - (model.height / 2);
+                            model.x = (innerWidth / 2) - (model.width / 2);
+                            model.y = (innerHeight / 2) - (model.height / 2);
                         }
                         if (properties.posx) {
-                            model.x = (properties.posx.value * app.screen.width / 100) - (model.width / 2);
+                            model.x = (properties.posx.value * innerWidth / 100) - (model.width / 2);
                         }
                         if (properties.posy) {
-                            model.y = (properties.posy.value * app.screen.height / 100) - (model.height / 2);
+                            model.y = (properties.posy.value * innerHeight / 100) - (model.height / 2);
                         }
                     }
                 };
