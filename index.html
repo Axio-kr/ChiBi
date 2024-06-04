@@ -77,8 +77,8 @@
                 model.updateTransform();
 
                 // 모델의 중심을 화면 중심에 맞추기
-                model.x = (innerWidth / 2) - (model.width / 2);
-                model.y = (innerHeight / 2) - (model.height / 2);
+                model.x = (app.screen.width / 2) - (model.width / 2);
+                model.y = (app.screen.height / 2) - (model.height / 2);
 
                 window.wallpaperPropertyListener = {
                     applyUserProperties: function(properties) {
@@ -87,14 +87,14 @@
                             model.scale.set(scaleValue);
                             // 스케일 변경 시에도 중심 위치 재조정
                             model.updateTransform();
-                            model.x = (innerWidth / 2) - (model.width / 2);
-                            model.y = (innerHeight / 2) - (model.height / 2);
+                            model.x = (app.screen.width / 2) - (model.width / 2);
+                            model.y = (app.screen.height / 2) - (model.height / 2);
                         }
                         if (properties.posx) {
-                            model.x = (properties.posx.value * innerWidth / 100) - (model.width / 2);
+                            model.x = (properties.posx.value * app.screen.width / 100) - (model.width / 2);
                         }
                         if (properties.posy) {
-                            model.y = (properties.posy.value * innerHeight / 100) - (model.height / 2);
+                            model.y = (properties.posy.value * app.screen.height / 100) - (model.height / 2);
                         }
                     }
                 };
